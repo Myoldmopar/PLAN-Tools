@@ -1,0 +1,5 @@
+# for running tests
+coveralls
+flake8
+nose
+sphinx
