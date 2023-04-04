@@ -3,6 +3,7 @@
 [![Flake8](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/flake8.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/flake8.yml)
 [![Run Tests](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/test.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/test.yml)
 [![PyPIRelease](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/release.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/release.yml)
+[![Documentation Status](https://readthedocs.org/projects/plan-tools/badge/?version=latest)](https://plan-tools.readthedocs.io/en/latest/?badge=latest)
 
 Tooling to help with PLAN: Pip Links And Nonsense
 
