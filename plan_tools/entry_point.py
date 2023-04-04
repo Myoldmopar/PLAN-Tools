@@ -13,22 +13,23 @@ class EntryPoint:
     The entry points may live in either the console_scripts or the gui_scripts subsections.
     Either way, when the package is pip installed, it results in a binary blob in a bin/ or Scripts/ directory
     """
-    def __init__(self, executable_name: str, nice_name: str, description: str, wm_class: str):
+    def __init__(self, package_source_dir: str, executable_name: str, nice_name: str, description: str, wm_class: str):
         """
         Construct a single script instance, using arguments.
 
+        :param package_source_dir: The name of the source dir containing the package code
         :param executable_name: The name of a resulting executable file (without the exe extension)
         :param nice_name: The "nice" name to use to reference the tool in links and menus
         :param description: The description to show up in Linux .desktop files
         :param wm_class: The wm-class for the Tk GUI (assigned in Tk(className='energyplus_regression_runner'))
         """
+        self.this_package_root = Path(__file__).parent.parent / package_source_dir
         self.pretty_link_name = nice_name  # don't include the .lnk extension
         self.description = description
         self.wm_class = wm_class
         self.installed_binary_name = executable_name
         if system() == 'Windows':
             self.installed_binary_name += '.exe'
-        self.this_package_root = Path(__file__).parent
 
     def run(self) -> int:
         """
@@ -118,9 +119,10 @@ def example_package_usage(_argv: List[str]) -> int:
     :return: zero for success, nonzero otherwise
     """
     # Could handle arguments here
+    source_dir = "cool_library"
     exe_name = "name_of_executable"
     nice_name = "Cool Program Name"
-    s = EntryPoint(exe_name, nice_name, "A really great tool description here", exe_name)
+    s = EntryPoint(source_dir, exe_name, nice_name, "A really great tool description here", exe_name)
     return s.run()
 
 
