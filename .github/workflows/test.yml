@@ -26,6 +26,7 @@ jobs:
         uses: coverallsapp/github-action@v1
         with:
           parallel: true
+          path-to-lcov: .coverage
   finish:
     needs: unit_tests
     runs-on: ubuntu-latest
