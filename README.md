@@ -2,6 +2,7 @@
 
 [![Flake8](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/flake8.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/flake8.yml)
 [![Run Tests](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/test.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/test.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Myoldmopar/PLAN-Tools/badge.svg?branch=main)](https://coveralls.io/github/Myoldmopar/PLAN-Tools?branch=main)
 [![PyPIRelease](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/release.yml/badge.svg)](https://github.com/Myoldmopar/PLAN-Tools/actions/workflows/release.yml)
 [![Documentation Status](https://readthedocs.org/projects/plan-tools/badge/?version=latest)](https://plan-tools.readthedocs.io/en/latest/?badge=latest)
 

@@ -1,5 +1,6 @@
 import codecs
 import os
+from platform import system
 from setuptools import setup, find_packages
 
 from plan_tools import NAME, VERSION
@@ -7,6 +8,10 @@ from plan_tools import NAME, VERSION
 this_dir = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(this_dir, 'README.md'), encoding='utf-8') as i_file:
     long_description = i_file.read()
+
+install_requires = []
+if system() == 'Windows':
+    install_requires.append('pypiwin32')
 
 setup(
     name=NAME,
@@ -23,7 +28,7 @@ setup(
     tests_require=['nose'],
     keywords='energyplus',
     include_package_data=True,  # use /MANIFEST.in file for declaring package data
-    install_requires=[],
+    install_requires=install_requires,
     entry_points={
         'console_scripts': [
             'plan_tool=plan_tools.runner:cli',
