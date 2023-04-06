@@ -1,2 +1,2 @@
 NAME = 'PLAN-Tools'
-VERSION = 0.4
+VERSION = 0.41

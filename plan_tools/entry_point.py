@@ -93,7 +93,7 @@ class EntryPoint:
                 s = shell.CreateShortCut(str(desktop_file))
                 s.Targetpath = str(target_exe)
                 s.WorkingDirectory = str(scripts_dir)
-                s.IconLocation = icon_file_string
+                s.IconLocation = str(icon_file_string)
                 s.save()
         elif system() == 'Linux':
             desktop_file_contents = f"""[Desktop Entry]
