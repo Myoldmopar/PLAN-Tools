@@ -37,5 +37,5 @@ def fixup_taskbar_icon_on_windows(entry_point_id: str) -> None:
         if platform.startswith('win'):
             import ctypes
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(f"Plan.Tools.Program.{entry_point_id}")
-    except Exception:
+    except Exception:  # pragma: no cover
         pass
