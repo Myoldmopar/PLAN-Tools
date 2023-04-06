@@ -23,7 +23,15 @@ jobs:
       - name: Run Tests
         run: nosetests
       - name: Coveralls
-        # if: ${{ matrix.os == 'ubuntu-22.04' }}
         run: coveralls --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: true
+  finish:
+    needs: unit_tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close parallel build
+        uses: coverallsapp/github-action@v1
+        with:
+          parallel-finished: true
