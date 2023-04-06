@@ -6,10 +6,6 @@ defaults:
   run:
     shell: bash
 
-env:
-  global:
-    - COVERALLS_PARALLEL=true
-
 jobs:
   unit_tests:
     strategy:
@@ -31,6 +27,7 @@ jobs:
         run: coveralls --service=github
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_PARALLEL: true
   finish:
     needs: unit_tests
     runs-on: ubuntu-latest
