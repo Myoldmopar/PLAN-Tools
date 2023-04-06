@@ -82,18 +82,18 @@ class EntryPoint:
     def write_desktop_file(self, desktop_file: Path, target_exe: Path, scripts_dir: Path, icon_file: Path):
         icon_file_string = icon_file if icon_file.exists() else ''
         if system() == 'Windows':
-            # noinspection PyUnresolvedReferences
-            from win32com.client import Dispatch
-            shell = Dispatch('WScript.Shell')
-            s = shell.CreateShortCut(str(desktop_file))
-            s.Targetpath = str(target_exe)
-            s.WorkingDirectory = str(scripts_dir)
-            s.IconLocation = icon_file_string
             self.desktop_file_data_check = {'exe': target_exe, 'cwd': scripts_dir, 'icon': icon_file_string}
             if self.test_mode:
                 return
             else:  # pragma: no cover
                 # maybe someday we could actually test this in CI
+                # noinspection PyUnresolvedReferences
+                from win32com.client import Dispatch
+                shell = Dispatch('WScript.Shell')
+                s = shell.CreateShortCut(str(desktop_file))
+                s.Targetpath = str(target_exe)
+                s.WorkingDirectory = str(scripts_dir)
+                s.IconLocation = icon_file_string
                 s.save()
         elif system() == 'Linux':
             desktop_file_contents = f"""[Desktop Entry]
