@@ -6,6 +6,10 @@ defaults:
   run:
     shell: bash
 
+env:
+  global:
+    - COVERALLS_PARALLEL=true
+
 jobs:
   unit_tests:
     strategy:
@@ -22,11 +26,11 @@ jobs:
         run: pip install -r requirements.txt
       - name: Run Tests
         run: nosetests
-      - name: Push Coveralls Results in Parallel Mode
-        uses: coverallsapp/github-action@v1
-        with:
-          parallel: true
-          path-to-lcov: .coverage
+      - name: Coveralls
+        # if: ${{ matrix.os == 'ubuntu-22.04' }}
+        run: coveralls --service=github
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   finish:
     needs: unit_tests
     runs-on: ubuntu-latest
