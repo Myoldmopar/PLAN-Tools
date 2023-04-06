@@ -27,7 +27,7 @@ jobs:
         with:
           parallel: true
   finish:
-    needs: test
+    needs: unit_tests
     runs-on: ubuntu-latest
     steps:
       - name: Close parallel build
