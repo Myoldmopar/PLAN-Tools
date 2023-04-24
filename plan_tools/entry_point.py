@@ -82,15 +82,15 @@ class EntryPoint:
         return 0
 
     def write_desktop_file(self, desktop_file: Path, target_exe: Path, scripts_dir: Path, icon_file: Path):
-        icon_file_string: str = str(icon_file) if icon_file.exists() else ''
         if system() == 'Windows':
+            def escape_path(path_: Path) -> str:
+                return str(path_).replace('\\', '/')
+
+            icon_file_string: str = escape_path(icon_file) if icon_file.exists() else ''
             self.desktop_file_data_check = {'exe': target_exe, 'cwd': scripts_dir, 'icon': icon_file_string}
             if self.test_mode:
                 return
             else:  # pragma: no cover
-                def escape_path(path_: Path) -> str:
-                    return str(path_).replace('\\', '/')
-
                 shortcut_path = escape_path(desktop_file)
                 target = escape_path(target_exe)
                 working_dir = escape_path(scripts_dir)
@@ -112,7 +112,7 @@ shortcut.Save();'''
 Name={self.pretty_link_name}
 Comment={self.description}
 Exec={target_exe}
-Icon={icon_file_string}
+Icon={str(icon_file) if icon_file.exists() else ''}
 Type=Application
 Path={scripts_dir}
 Terminal=false
