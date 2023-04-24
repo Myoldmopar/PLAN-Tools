@@ -94,13 +94,12 @@ class EntryPoint:
                 shortcut_path = escape_path(desktop_file)
                 target = escape_path(target_exe)
                 working_dir = escape_path(scripts_dir)
-                js_content = f'''
-                        var sh = WScript.CreateObject("WScript.Shell");
-                        var shortcut = sh.CreateShortcut("{shortcut_path}");
-                        shortcut.TargetPath = "{target}";
-                        shortcut.WorkingDirectory = "{working_dir}";
-                        shortcut.IconLocation = "{icon_file_string}";
-                        shortcut.Save();'''
+                js_content = f'''var sh = WScript.CreateObject("WScript.Shell");
+var shortcut = sh.CreateShortcut("{shortcut_path}");
+shortcut.TargetPath = "{target}";
+shortcut.WorkingDirectory = "{working_dir}";
+shortcut.IconLocation = "{icon_file_string}";
+shortcut.Save();'''
                 script_fd, script_path = mkstemp('.js')
                 try:
                     with fdopen(script_fd, 'w') as f:
