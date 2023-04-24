@@ -9,18 +9,13 @@ this_dir = os.path.abspath(os.path.dirname(__file__))
 with codecs.open(os.path.join(this_dir, 'README.md'), encoding='utf-8') as i_file:
     long_description = i_file.read()
 
-install_requires = []
-if system() == 'Windows':
-    install_requires.append('pypiwin32')
-
 setup(
     name=NAME,
     version=VERSION,
     packages=find_packages(exclude=['test', 'tests', 'test.*']),
     url='https://github.com/Myoldmopar/PlanTools',
-    license='',
-    author='Edwin Lee',
-    author_email='',
+    license='ModifiedBSD',
+    author='Edwin Lee, for NREL, for United States Department of Energy',
     description='A set of tools to help with Pip Links And Nonsense',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -28,7 +23,7 @@ setup(
     tests_require=['nose'],
     keywords='energyplus',
     include_package_data=True,  # use /MANIFEST.in file for declaring package data
-    install_requires=install_requires,
+    install_requires=[],
     entry_points={
         'console_scripts': [
             'plan_tool=plan_tools.runner:cli',

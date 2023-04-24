@@ -1,10 +1,12 @@
 from shutil import copyfile
-from os import chmod, path, stat, symlink
+from os import chmod, path, stat, symlink, fdopen, unlink
 from pathlib import Path
 from platform import system
 from site import USER_BASE, getusersitepackages
+from subprocess import check_call
 from sys import argv
 from sysconfig import get_path
+from tempfile import mkstemp
 from typing import List
 
 
@@ -80,21 +82,31 @@ class EntryPoint:
         return 0
 
     def write_desktop_file(self, desktop_file: Path, target_exe: Path, scripts_dir: Path, icon_file: Path):
-        icon_file_string = icon_file if icon_file.exists() else ''
+        icon_file_string: str = str(icon_file) if icon_file.exists() else ''
         if system() == 'Windows':
             self.desktop_file_data_check = {'exe': target_exe, 'cwd': scripts_dir, 'icon': icon_file_string}
             if self.test_mode:
                 return
             else:  # pragma: no cover
-                # maybe someday we could actually test this in CI
-                # noinspection PyUnresolvedReferences
-                from win32com.client import Dispatch
-                shell = Dispatch('WScript.Shell')
-                s = shell.CreateShortCut(str(desktop_file))
-                s.Targetpath = str(target_exe)
-                s.WorkingDirectory = str(scripts_dir)
-                s.IconLocation = str(icon_file_string)
-                s.save()
+                def escape_path(path_: Path) -> str:
+                    return str(path_).replace('\\', '/')
+
+                shortcut_path = escape_path(desktop_file)
+                target = escape_path(target_exe)
+                working_dir = escape_path(scripts_dir)
+                js_content = f'''var sh = WScript.CreateObject("WScript.Shell");
+var shortcut = sh.CreateShortcut("{shortcut_path}");
+shortcut.TargetPath = "{target}";
+shortcut.WorkingDirectory = "{working_dir}";
+shortcut.IconLocation = "{icon_file_string}";
+shortcut.Save();'''
+                script_fd, script_path = mkstemp('.js')
+                try:
+                    with fdopen(script_fd, 'w') as f:
+                        f.write(js_content)
+                    check_call([R'wscript.exe', script_path])
+                finally:
+                    unlink(script_path)
         elif system() == 'Linux':
             desktop_file_contents = f"""[Desktop Entry]
 Name={self.pretty_link_name}
