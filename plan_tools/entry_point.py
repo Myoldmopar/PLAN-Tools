@@ -82,15 +82,15 @@ class EntryPoint:
         return 0
 
     def write_desktop_file(self, desktop_file: Path, target_exe: Path, scripts_dir: Path, icon_file: Path):
-        icon_file_string: str = str(icon_file) if icon_file.exists() else ''
         if system() == 'Windows':
+            def escape_path(path_: Path) -> str:
+                return str(path_).replace('\\', '/')
+
+            icon_file_string: str = escape_path(icon_file) if icon_file.exists() else ''
             self.desktop_file_data_check = {'exe': target_exe, 'cwd': scripts_dir, 'icon': icon_file_string}
             if self.test_mode:
                 return
             else:  # pragma: no cover
-                def escape_path(path_: Path) -> str:
-                    return str(path_).replace('\\', '/')
-
                 shortcut_path = escape_path(desktop_file)
                 target = escape_path(target_exe)
                 working_dir = escape_path(scripts_dir)
@@ -112,7 +112,7 @@ shortcut.Save();'''
 Name={self.pretty_link_name}
 Comment={self.description}
 Exec={target_exe}
-Icon={icon_file_string}
+Icon={str(icon_file) if icon_file.exists() else ''}
 Type=Application
 Path={scripts_dir}
 Terminal=false
@@ -205,7 +205,8 @@ StartupWMClass={self.wm_class}"""
             global_scripts_dir = Path(get_path('scripts'))
         user_exe = user_scripts_dir / self.installed_binary_name
         global_exe = global_scripts_dir / self.installed_binary_name
-        if user_exe.exists() and global_exe.exists():
+        if user_exe.exists() and global_exe.exists():  # pragma: no cover
+            # I'm going to allow this to be uncovered because it will be awkward to get this set up properly
             print(f"Detected the {self.installed_binary_name} binary in both user and global locations.")
             print("Due to this ambiguity, I cannot figure out to which one I should link.")
             print(f"User install location: {user_exe}")
@@ -217,10 +218,10 @@ StartupWMClass={self.wm_class}"""
         elif global_exe.exists():
             return global_scripts_dir
         else:
-            print(f"Could not find {self.installed_binary_name} binary at either user or global location.")
-            print("This is weird since you are running this script...did you actually pip install this tool?")
-            print("Make sure to pip install the tool and then retry")
-            raise Exception("Could not find executable at user or global location")
+            msg = f"Could not find {self.installed_binary_name} binary at either user or global location."
+            msg += "This is weird since you are running this script...did you actually pip install this tool?"
+            msg += "Make sure to pip install the tool and then retry"
+            raise Exception(msg)
 
     def get_package_icon_for_link(self):
         if system() == 'Windows':

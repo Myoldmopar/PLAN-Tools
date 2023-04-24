@@ -7,7 +7,7 @@ from plan_tools.entry_point import EntryPoint
 
 class TestEntryPoint(TestCase):
 
-    def test_entry_point(self):
+    def test_entry_point_success(self):
         # it will be difficult to test the resulting paths on CI
         # we can at least test that it is returning good types
         # for now I'm going to try to test it with pip... :)
@@ -30,3 +30,8 @@ class TestEntryPoint(TestCase):
             self.assertIn('icon', e.desktop_file_data_check)
             self.assertIn('plist_path', e.desktop_file_data_check)
             self.assertIn('plist_contents', e.desktop_file_data_check)
+
+    def test_entry_point_cannot_find_binary(self):
+        e = EntryPoint("does not matter", "does not exist!", "Nice Name", "Descriptive", "wm-class", test_mode=True)
+        with self.assertRaises(Exception):
+            e.get_pip_entry_point_exe_dir()
