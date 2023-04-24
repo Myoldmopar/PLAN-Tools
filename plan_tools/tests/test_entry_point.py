@@ -31,7 +31,7 @@ class TestEntryPoint(TestCase):
             self.assertIn('plist_path', e.desktop_file_data_check)
             self.assertIn('plist_contents', e.desktop_file_data_check)
 
-    def test_entry_point_failure(self):
+    def test_entry_point_cannot_find_binary(self):
         e = EntryPoint("does not matter", "does not exist!", "Nice Name", "Descriptive", "wm-class", test_mode=True)
         with self.assertRaises(Exception):
             e.get_pip_entry_point_exe_dir()
