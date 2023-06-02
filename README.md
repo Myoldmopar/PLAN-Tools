@@ -76,6 +76,12 @@ In the GUI code, (Tkinter, etc.), simply import this library (`from plan_tools.r
 and then call that function with a program name (`fixup_taskbar_icon_on_windows('This Cool GUI')`).
 The taskbar should now show the same icon that was registered as the program icon using the GUI library. 
 
+---
+IMPORTANT NOTE: You need to call `fixup_taskbar_icon_on_windows` as early as possible, before doing any GUI construction.
+If it is too late, the taskbar icon will not be updated with the right icon, as the model user ID will not be respected.
+See https://stackoverflow.com/a/3670763/2600110.
+---
+
 ### Testing
 
 Steps to Test:
